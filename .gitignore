@@ -1,0 +1,33 @@
+# .NET / Visual Studio build outputs
+bin/
+obj/
+publish/
+artifacts/
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+TestResults/
+
+# Generated packages and logs
+*.msix
+*.msixbundle
+*.appx
+*.appxbundle
+*.msixupload
+*.appxupload
+*.binlog
+*.log
+
+# Save data and backups (never commit personal game saves)
+*.sav
+*.sav.bak
+*.bak
+
+# OS temporary files
+.DS_Store
+Thumbs.db
+Desktop.ini

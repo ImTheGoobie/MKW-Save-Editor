@@ -1,0 +1,82 @@
+<Window
+    x:Class="MKWWinUI.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MKWWinUI"
+    Title="Mario Kart World • Save Editor">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Padding="28,24,28,18" ColumnSpacing="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Spacing="6">
+                <TextBlock Text="MARIO KART WORLD" FontSize="12" FontWeight="SemiBold"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                <TextBlock Text="Save Editor" FontSize="32" FontWeight="SemiBold"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                <Button x:Name="FindEdenButton" Content="Find Eden save" Click="FindEden_Click" Padding="18,10"/>
+                <Button Content="Open save…" Click="Open_Click" Padding="18,10"/>
+                <Button x:Name="SaveButton" Content="Save changes" Click="Save_Click"
+                        Style="{StaticResource AccentButtonStyle}" IsEnabled="False" Padding="18,10"/>
+            </StackPanel>
+        </Grid>
+        <Border Grid.Row="1" Margin="28,0,28,16" Padding="16" CornerRadius="10"
+                BorderThickness="1" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <Grid ColumnSpacing="16">
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                <StackPanel Spacing="5">
+                    <TextBlock x:Name="FormatText" Text="No save loaded" FontWeight="SemiBold" FontSize="15"/>
+                    <TextBlock x:Name="PathText" Text="Open an account.sav file to begin."
+                               TextTrimming="CharacterEllipsis" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                </StackPanel>
+                <TextBlock x:Name="SelectedText" Grid.Column="1" VerticalAlignment="Center"
+                           FontWeight="SemiBold" Text="0 selected"/>
+            </Grid>
+        </Border>
+        <StackPanel Grid.Row="2" Margin="28,0,28,12" Spacing="12">
+            <InfoBar x:Name="Notice" IsOpen="True" IsClosable="False"
+                     Severity="Informational" Title="Eden and Switch supported"
+                     Message="Eden unlock editing uses known offsets. Switch writes are experimental; its ownership metadata is not decoded."/>
+            <Grid ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/><ColumnDefinition Width="0"/>
+                    <ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="SearchBox" PlaceholderText="Search characters or outfits…"
+                         TextChanged="Filter_Changed"/>
+                <Button Grid.Column="2" Content="Select all shown" Click="SelectAll_Click" Padding="12,8"/>
+                <Button Grid.Column="3" Content="Clear shown" Click="ClearAll_Click" Padding="12,8"/>
+            </Grid>
+        </StackPanel>
+        <Border Grid.Row="3" Margin="28,0,28,14" CornerRadius="10"
+                BorderThickness="1" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <Grid x:Name="GroupPanel" Padding="12" ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel x:Name="GroupColumn0" Grid.Column="0" Spacing="12"/>
+                        <StackPanel x:Name="GroupColumn1" Grid.Column="1" Spacing="12"/>
+                        <StackPanel x:Name="GroupColumn2" Grid.Column="2" Spacing="12"/>
+                    </Grid>
+            </ScrollViewer>
+        </Border>
+        <Grid Grid.Row="4" Padding="28,0,28,18">
+            <TextBlock x:Name="FooterText" Text="Backups are created before overwriting. Close Eden or your Switch save manager before editing."
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"/>
+        </Grid>
+    </Grid>
+</Window>

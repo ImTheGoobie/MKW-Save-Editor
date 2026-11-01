@@ -1,0 +1,44 @@
+name: Build portable self-contained Windows app
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-2022
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Set up Visual Studio MSBuild
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: '[17.0,18.0)'
+
+      - name: Publish self-contained x64 app
+        shell: pwsh
+        run: |
+          msbuild MKW.WinUI.csproj /restore /t:Publish /p:Configuration=Release /p:Platform=x64 /p:RuntimeIdentifier=win-x64 /p:SelfContained=true /p:WindowsAppSDKSelfContained=true /p:WindowsPackageType=None /p:PublishDir="$($env:GITHUB_WORKSPACE)\publish\" /verbosity:minimal
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if (-not (Test-Path 'publish/MKW.WinUI.exe')) { throw 'Published executable was not found.' }
+
+      - name: Package portable ZIP
+        shell: pwsh
+        run: |
+          Compress-Archive -Path 'publish/*' -DestinationPath 'MKW-Save-Editor-win-x64.zip' -Force
+
+      - name: Upload portable build
+        uses: actions/upload-artifact@v4
+        with:
+          name: MKW-Save-Editor-win-x64
+          path: MKW-Save-Editor-win-x64.zip
+          if-no-files-found: error

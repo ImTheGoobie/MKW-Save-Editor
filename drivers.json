@@ -1,0 +1,765 @@
+{
+  "Baby Daisy": {
+    "baseActor": "Driver_BabyDaisy_00",
+    "outfits": [
+      {
+        "actor": "Driver_BabyDaisyCasual_00",
+        "id": "0x6851A493",
+        "name": "Casual"
+      },
+      {
+        "actor": "Driver_BabyDaisyExplore_00",
+        "id": "0x8F1A5336",
+        "name": "Explore"
+      },
+      {
+        "actor": "Driver_BabyDaisyMarine_00",
+        "id": "0x8D5851B4",
+        "name": "Marine"
+      },
+      {
+        "actor": "Driver_BabyDaisyRacing_00",
+        "id": "0xED685824",
+        "name": "Racing"
+      }
+    ]
+  },
+  "Baby Luigi": {
+    "baseActor": "Driver_BabyLuigi_00",
+    "outfits": [
+      {
+        "actor": "Driver_BabyLuigiFactory_00",
+        "id": "0x6F1F829F",
+        "name": "Factory"
+      },
+      {
+        "actor": "Driver_BabyLuigiRacing_00",
+        "id": "0xA509874B",
+        "name": "Racing"
+      }
+    ]
+  },
+  "Baby Mario": {
+    "baseActor": "Driver_BabyMario_00",
+    "outfits": [
+      {
+        "actor": "Driver_BabyMarioFactory_00",
+        "id": "0x35B42816",
+        "name": "Factory"
+      },
+      {
+        "actor": "Driver_BabyMarioRacing_00",
+        "id": "0x4A3E895C",
+        "name": "Racing"
+      },
+      {
+        "actor": "Driver_BabyMarioSwim_00",
+        "id": "0x708A2FF1",
+        "name": "Swim"
+      }
+    ]
+  },
+  "Baby Peach": {
+    "baseActor": "Driver_BabyPeach_00",
+    "outfits": [
+      {
+        "actor": "Driver_BabyPeachCasual_00",
+        "id": "0x81F10BDA",
+        "name": "Casual"
+      },
+      {
+        "actor": "Driver_BabyPeachExplore_00",
+        "id": "0x86E52EE0",
+        "name": "Explore"
+      },
+      {
+        "actor": "Driver_BabyPeachMarine_00",
+        "id": "0x1FD3B7DD",
+        "name": "Marine"
+      },
+      {
+        "actor": "Driver_BabyPeachRacing_00",
+        "id": "0x81EE84D7",
+        "name": "Racing"
+      }
+    ]
+  },
+  "Baby Rosalina": {
+    "baseActor": "Driver_BabyRosetta_00",
+    "outfits": [
+      {
+        "actor": "Driver_BabyRosettaCasual_00",
+        "id": "0xC80CDB44",
+        "name": "Casual"
+      },
+      {
+        "actor": "Driver_BabyRosettaExplore_00",
+        "id": "0xF5EA35C5",
+        "name": "Explore"
+      },
+      {
+        "actor": "Driver_BabyRosettaMarine_00",
+        "id": "0x63E27DB8",
+        "name": "Marine"
+      },
+      {
+        "actor": "Driver_BabyRosettaRacing_00",
+        "id": "0xE230F32B",
+        "name": "Racing"
+      }
+    ]
+  },
+  "Birdo": {
+    "baseActor": "Driver_Catherine_00",
+    "outfits": [
+      {
+        "actor": "Driver_CatherineLagoonCity_00",
+        "id": "0x015C530B",
+        "name": "LagoonCity"
+      },
+      {
+        "actor": "Driver_CatherineRacing_00",
+        "id": "0x84E4743F",
+        "name": "Racing"
+      }
+    ]
+  },
+  "Bowser": {
+    "baseActor": "Driver_Koopa_00",
+    "outfits": [
+      {
+        "actor": "Driver_KoopaHotrod_00",
+        "id": "0xD98AEE03",
+        "name": "Hotrod"
+      },
+      {
+        "actor": "Driver_KoopaOffroad_00",
+        "id": "0x669E7BC6",
+        "name": "Offroad"
+      },
+      {
+        "actor": "Driver_KoopaRacing_00",
+        "id": "0xB5928D01",
+        "name": "Racing"
+      },
+      {
+        "actor": "Driver_KoopaRiders_00",
+        "id": "0xF94CE82D",
+        "name": "Riders"
+      }
+    ]
+  },
+  "Bowser Jr.": {
+    "baseActor": "Driver_KoopaJr_00",
+    "outfits": [
+      {
+        "actor": "Driver_KoopaJrRacing_00",
+        "id": "0xCC51B5AA",
+        "name": "Racing"
+      },
+      {
+        "actor": "Driver_KoopaJrRiders_00",
+        "id": "0x452D0C39",
+        "name": "Riders"
+      },
+      {
+        "actor": "Driver_KoopaJrScout_00",
+        "id": "0x8E745D91",
+        "name": "Scout"
+      }
+    ]
+  },
+  "Cow": {
+    "baseActor": "Driver_Cow_00",
+    "outfits": []
+  },
+  "Crab": {
+    "baseActor": "Driver_Crab_00",
+    "outfits": []
+  },
+  "Daisy": {
+    "baseActor": "Driver_Daisy_00",
+    "outfits": [
+      {
+        "actor": "Driver_DaisyCasual_00",
+        "id": "0xB9914DA9",
+        "name": "Casual"
+      },
+      {
+        "actor": "Driver_DaisyDesert_00",
+        "id": "0x9EF19592",
+        "name": "Desert"
+      },
+      {
+        "actor": "Driver_DaisyLagoonCity_00",
+        "id": "0xDFD424E3",
+        "name": "LagoonCity"
+      },
+      {
+        "actor": "Driver_DaisyOffroad_00",
+        "id": "0x01010B88",
+        "name": "Offroad"
+      },
+      {
+        "actor": "Driver_DaisyRacing_00",
+        "id": "0x78864652",
+        "name": "Racing"
+      },
+      {
+        "actor": "Driver_DaisySwim_00",
+        "id": "0x34B619E1",
+        "name": "Swim"
+      }
+    ]
+  },
+  "Donkey Kong": {
+    "baseActor": "Driver_DK_00",
+    "outfits": [
+      {
+        "actor": "Driver_DKOffroad_00",
+        "id": "0x282E4FBE",
+        "name": "Offroad"
+      }
+    ]
+  },
+  "Dry Bones": {
+    "baseActor": "Driver_Karon_00",
+    "outfits": []
+  },
+  "Enemy": {
+    "outfits": [
+      {
+        "actor": "Driver_Basabasa_00",
+        "id": "0xA521DD00",
+        "name": "Swoop"
+      },
+      {
+        "actor": "Driver_Bull_00",
+        "id": "0x8F367C1F",
+        "name": "Chargin’ Chuck"
+      },
+      {
+        "actor": "Driver_FishBone_00",
+        "id": "0x2D994783",
+        "name": "Fish Bone"
+      },
+      {
+        "actor": "Driver_Gabon_00",
+        "id": "0xDFFE51A0",
+        "name": "Spike"
+      },
+      {
+        "actor": "Driver_Gamane_00",
+        "id": "0xFCA1C2F9",
+        "name": "Coin Coffer"
+      },
+      {
+        "actor": "Driver_Lifton_00",
+        "id": "0x4792FBB8",
+        "name": "Dolphin"
+      },
+      {
+        "actor": "Driver_Monte_00",
+        "id": "0x868E65FE",
+        "name": "Pianta"
+      },
+      {
+        "actor": "Driver_Poihana_00",
+        "id": "0x44ED4676",
+        "name": "Cataquack"
+      },
+      {
+        "actor": "Driver_Poo_00",
+        "id": "0xB9563DC1",
+        "name": "Rocky Wrench"
+      },
+      {
+        "actor": "Driver_Teren_00",
+        "id": "0xF656E805",
+        "name": "Peepa"
+      },
+      {
+        "actor": "Driver_Tuccondor_00",
+        "id": "0xC7F3A5F9",
+        "name": "Conkdor"
+      }
+    ]
+  },
+  "Goomba": {
+    "baseActor": "Driver_Kuribo_00",
+    "outfits": []
+  },
+  "Hacchin": {
+    "baseActor": "Driver_Hacchin_00",
+    "outfits": []
+  },
+  "Hammer Bro": {
+    "baseActor": "Driver_HammerBros_00",
+    "outfits": []
+  },
+  "King Boo": {
+    "baseActor": "Driver_KingTeresa_00",
+    "outfits": [
+      {
+        "actor": "Driver_KingTeresaMovie_00",
+        "id": "0xA8E8CA8E",
+        "name": "Movie"
+      },
+      {
+        "actor": "Driver_KingTeresaPirate_00",
+        "id": "0x4D99A215",
+        "name": "Pirate"
+      },
+      {
+        "actor": "Driver_KingTeresaRacing_00",
+        "id": "0xE8A6B29A",
+        "name": "Racing"
+      }
+    ]
+  },
+  "Koopa Troopa": {
+    "baseActor": "Driver_Nokonoko_00",
+    "outfits": [
+      {
+        "actor": "Driver_NokonokoFlagman_00",
+        "id": "0x45A327E4",
+        "name": "Flagman"
+      },
+      {
+        "actor": "Driver_NokonokoOffroad_00",
+        "id": "0xF3205CE0",
+        "name": "Offroad"
+      },
+      {
+        "actor": "Driver_NokonokoRacing_00",
+        "id": "0xD1C71FC4",
+        "name": "Racing"
+      },
+      {
+        "actor": "Driver_NokonokoRunner_00",
+        "id": "0xD9DD924B",
+        "name": "Runner"
+      },
+      {
+        "actor": "Driver_NokonokoSailor_00",
+        "id": "0x52A5CC02",
+        "name": "Sailor"
+      }
+    ]
+  },
+  "Lakitu": {
+    "baseActor": "Driver_Jugem_00",
+    "outfits": [
+      {
+        "actor": "Driver_JugemAngler_00",
+        "id": "0x86AAFE18",
+        "name": "Angler"
+      },
+      {
+        "actor": "Driver_JugemRacing_00",
+        "id": "0x28300AB7",
+        "name": "Racing"
+      }
+    ]
+  },
+  "Luigi": {
+    "baseActor": "Driver_Luigi_00",
+    "outfits": [
+      {
+        "actor": "Driver_LuigiCasual_00",
+        "id": "0xF4ECF827",
+        "name": "Casual"
+      },
+      {
+        "actor": "Driver_LuigiDesert_00",
+        "id": "0x4F76FA1E",
+        "name": "Desert"
+      },
+      {
+        "actor": "Driver_LuigiFarmer_00",
+        "id": "0xE244F406",
+        "name": "Farmer"
+      },
+      {
+        "actor": "Driver_LuigiLagoonCity_00",
+        "id": "0x6818D170",
+        "name": "LagoonCity"
+      },
+      {
+        "actor": "Driver_LuigiMechanic_00",
+        "id": "0xD1D378BB",
+        "name": "Mechanic"
+      },
+      {
+        "actor": "Driver_LuigiOffroad_00",
+        "id": "0xC030274C",
+        "name": "Offroad"
+      },
+      {
+        "actor": "Driver_LuigiOmatsuri_00",
+        "id": "0x1F651DCE",
+        "name": "Omatsuri"
+      },
+      {
+        "actor": "Driver_LuigiRacing_00",
+        "id": "0x7701E160",
+        "name": "Racing"
+      }
+    ]
+  },
+  "Mario": {
+    "baseActor": "Driver_Mario_00",
+    "outfits": [
+      {
+        "actor": "Driver_MarioCasual_00",
+        "id": "0x8D958C16",
+        "name": "Casual"
+      },
+      {
+        "actor": "Driver_MarioDesert_00",
+        "id": "0xE84C32EA",
+        "name": "Desert"
+      },
+      {
+        "actor": "Driver_MarioMechanic_00",
+        "id": "0x8DEC4839",
+        "name": "Mechanic"
+      },
+      {
+        "actor": "Driver_MarioOffroad_00",
+        "id": "0xFFC551E2",
+        "name": "Offroad"
+      },
+      {
+        "actor": "Driver_MarioOmatsuri_00",
+        "id": "0x13FD3A47",
+        "name": "Omatsuri"
+      },
+      {
+        "actor": "Driver_MarioPilot_00",
+        "id": "0x249C85F8",
+        "name": "Pilot"
+      },
+      {
+        "actor": "Driver_MarioRacing_00",
+        "id": "0xA20D1166",
+        "name": "Racing"
+      },
+      {
+        "actor": "Driver_MarioSheriff_00",
+        "id": "0xB1C1014B",
+        "name": "Sheriff"
+      },
+      {
+        "actor": "Driver_MarioVacance_00",
+        "id": "0xD2B9882A",
+        "name": "Vacance"
+      }
+    ]
+  },
+  "Monty Mole": {
+    "baseActor": "Driver_Choropoo_00",
+    "outfits": []
+  },
+  "Other": {
+    "outfits": [
+      {
+        "actor": "Driver_DriverBase",
+        "id": "0x93C15A11",
+        "name": "DriverBase"
+      }
+    ]
+  },
+  "Patatenten": {
+    "baseActor": "Driver_Patatenten_00",
+    "outfits": []
+  },
+  "Pauline": {
+    "baseActor": "Driver_Pauline_00",
+    "outfits": [
+      {
+        "actor": "Driver_PaulineOffroad_00",
+        "id": "0x5247B366",
+        "name": "Offroad"
+      }
+    ]
+  },
+  "Peach": {
+    "baseActor": "Driver_Peach_00",
+    "outfits": [
+      {
+        "actor": "Driver_PeachCasual_00",
+        "id": "0x452BA635",
+        "name": "Casual"
+      },
+      {
+        "actor": "Driver_PeachFarmer_00",
+        "id": "0x834F4BA9",
+        "name": "Farmer"
+      },
+      {
+        "actor": "Driver_PeachLagoonCity_00",
+        "id": "0x83FC8E8E",
+        "name": "LagoonCity"
+      },
+      {
+        "actor": "Driver_PeachOffroad_00",
+        "id": "0x61E01EA6",
+        "name": "Offroad"
+      },
+      {
+        "actor": "Driver_PeachPilot_00",
+        "id": "0x5F413198",
+        "name": "Pilot"
+      },
+      {
+        "actor": "Driver_PeachRacing_00",
+        "id": "0x27C50167",
+        "name": "Racing"
+      },
+      {
+        "actor": "Driver_PeachResort_00",
+        "id": "0x241145C6",
+        "name": "Resort"
+      },
+      {
+        "actor": "Driver_PeachYukata_00",
+        "id": "0xCFE443CA",
+        "name": "Yukata"
+      }
+    ]
+  },
+  "Penguin": {
+    "baseActor": "Driver_Penguin_00",
+    "outfits": []
+  },
+  "Piranha Plant": {
+    "baseActor": "Driver_PackunFlower_00",
+    "outfits": []
+  },
+  "Pukupuku": {
+    "baseActor": "Driver_Pukupuku_00",
+    "outfits": []
+  },
+  "Rosalina": {
+    "baseActor": "Driver_Rosetta_00",
+    "outfits": [
+      {
+        "actor": "Driver_RosettaAurora_00",
+        "id": "0xD09A0159",
+        "name": "Aurora"
+      },
+      {
+        "actor": "Driver_RosettaCasual_00",
+        "id": "0x286B5231",
+        "name": "Casual"
+      },
+      {
+        "actor": "Driver_RosettaOffroad_00",
+        "id": "0xA9B5A0E1",
+        "name": "Offroad"
+      },
+      {
+        "actor": "Driver_RosettaRacing_00",
+        "id": "0xE99D5F16",
+        "name": "Racing"
+      }
+    ]
+  },
+  "Sambo": {
+    "baseActor": "Driver_Sambo_00",
+    "outfits": []
+  },
+  "Shy Guy": {
+    "baseActor": "Driver_Heyho_00",
+    "outfits": [
+      {
+        "actor": "Driver_HeyhoRacing_00",
+        "id": "0x1D59973D",
+        "name": "Racing"
+      },
+      {
+        "actor": "Driver_HeyhoSnow_00",
+        "id": "0x4A92C360",
+        "name": "Snow"
+      }
+    ]
+  },
+  "Snowman": {
+    "baseActor": "Driver_Snowman_00",
+    "outfits": []
+  },
+  "Toad": {
+    "baseActor": "Driver_Kinopio_00",
+    "outfits": [
+      {
+        "actor": "Driver_KinopioDiner_00",
+        "id": "0x7B85F830",
+        "name": "Diner"
+      },
+      {
+        "actor": "Driver_KinopioEngineer_00",
+        "id": "0x48624056",
+        "name": "Engineer"
+      },
+      {
+        "actor": "Driver_KinopioExplore_00",
+        "id": "0x908377FD",
+        "name": "Explore"
+      },
+      {
+        "actor": "Driver_KinopioRacing_00",
+        "id": "0x4609C369",
+        "name": "Racing"
+      }
+    ]
+  },
+  "Toadette": {
+    "baseActor": "Driver_Kinopico_00",
+    "outfits": [
+      {
+        "actor": "Driver_KinopicoConductor_00",
+        "id": "0x624E4154",
+        "name": "Conductor"
+      },
+      {
+        "actor": "Driver_KinopicoExplore_00",
+        "id": "0xF288D7A2",
+        "name": "Explore"
+      },
+      {
+        "actor": "Driver_KinopicoIce_00",
+        "id": "0x2922CF18",
+        "name": "Ice"
+      },
+      {
+        "actor": "Driver_KinopicoRacing_00",
+        "id": "0x8CCF6911",
+        "name": "Racing"
+      }
+    ]
+  },
+  "Totten": {
+    "baseActor": "Driver_Totten_00",
+    "outfits": []
+  },
+  "Waluigi": {
+    "baseActor": "Driver_Waluigi_00",
+    "outfits": [
+      {
+        "actor": "Driver_WaluigiDiner_00",
+        "id": "0x3BBA6382",
+        "name": "Diner"
+      },
+      {
+        "actor": "Driver_WaluigiHorror_00",
+        "id": "0xF75AB76F",
+        "name": "Horror"
+      },
+      {
+        "actor": "Driver_WaluigiMariachi_00",
+        "id": "0x573F5E7E",
+        "name": "Mariachi"
+      },
+      {
+        "actor": "Driver_WaluigiRacing_00",
+        "id": "0xC5C7DFB3",
+        "name": "Racing"
+      },
+      {
+        "actor": "Driver_WaluigiStadium_00",
+        "id": "0xB364503D",
+        "name": "Stadium"
+      }
+    ]
+  },
+  "Wario": {
+    "baseActor": "Driver_Wario_00",
+    "outfits": [
+      {
+        "actor": "Driver_WarioDesert_00",
+        "id": "0x097B4D4C",
+        "name": "Desert"
+      },
+      {
+        "actor": "Driver_WarioDiner_00",
+        "id": "0x3CF18052",
+        "name": "Diner"
+      },
+      {
+        "actor": "Driver_WarioFactory_00",
+        "id": "0x0D671347",
+        "name": "Factory"
+      },
+      {
+        "actor": "Driver_WarioFairy_00",
+        "id": "0xFF3A79EC",
+        "name": "Fairy"
+      },
+      {
+        "actor": "Driver_WarioPirate_00",
+        "id": "0x17BF17A3",
+        "name": "Pirate"
+      },
+      {
+        "actor": "Driver_WarioRacing_00",
+        "id": "0x42AAE921",
+        "name": "Racing"
+      },
+      {
+        "actor": "Driver_WarioStadium_00",
+        "id": "0xE65BA972",
+        "name": "Stadium"
+      }
+    ]
+  },
+  "Wiggler": {
+    "baseActor": "Driver_Hanachan_00",
+    "outfits": []
+  },
+  "Yoshi": {
+    "baseActor": "Driver_Yoshi_00",
+    "outfits": [
+      {
+        "actor": "Driver_YoshiCasual_00",
+        "id": "0x35DD9AA9",
+        "name": "Casual"
+      },
+      {
+        "actor": "Driver_YoshiDelivery_00",
+        "id": "0xBAC0FCD4",
+        "name": "Delivery"
+      },
+      {
+        "actor": "Driver_YoshiHachimaki_00",
+        "id": "0x4022242E",
+        "name": "Hachimaki"
+      },
+      {
+        "actor": "Driver_YoshiIce_00",
+        "id": "0xD9F82B44",
+        "name": "Ice"
+      },
+      {
+        "actor": "Driver_YoshiMovie_00",
+        "id": "0x2919EFA8",
+        "name": "Movie"
+      },
+      {
+        "actor": "Driver_YoshiRacing_00",
+        "id": "0x4EF28B60",
+        "name": "Racing"
+      },
+      {
+        "actor": "Driver_YoshiStadium_00",
+        "id": "0xD291672E",
+        "name": "Stadium"
+      },
+      {
+        "actor": "Driver_YoshiSwim_00",
+        "id": "0x7C45EDCF",
+        "name": "Swim"
+      }
+    ]
+  }
+}
