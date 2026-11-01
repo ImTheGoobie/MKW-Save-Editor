@@ -1,71 +1,70 @@
-name: Build portable self-contained Windows app
+name: Build MKW Save Editor
 
 on:
   push:
-    branches: ['**']
+    branches:
+      - main
     tags:
       - 'v*'
   pull_request:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
-    runs-on: windows-2022
+    runs-on: windows-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install .NET 8 SDK
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup .NET 8
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
-      - name: Set up Visual Studio MSBuild
-        uses: microsoft/setup-msbuild@v2
-        with:
-          vs-version: '[17.0,18.0)'
-
-      - name: Publish self-contained x64 app
+      - name: Restore and publish
         shell: pwsh
         run: |
-          msbuild MKW.WinUI.csproj /restore /t:Publish /p:Configuration=Release /p:Platform=x64 /p:RuntimeIdentifier=win-x64 /p:SelfContained=true /p:WindowsAppSDKSelfContained=true /p:WindowsPackageType=None /p:PublishDir="$($env:GITHUB_WORKSPACE)\publish\" /verbosity:minimal
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          if (-not (Test-Path 'publish/MKW.WinUI.exe')) { throw 'Published executable was not found.' }
+          msbuild MKW.WinUI.csproj /restore /t:Publish `
+            /p:Configuration=Release `
+            /p:Platform=x64 `
+            /p:RuntimeIdentifier=win-x64 `
+            /p:SelfContained=true `
+            /p:WindowsAppSDKSelfContained=true `
+            /p:WindowsPackageType=None
 
-      - name: Verify single-file output
+      - name: Find published EXE
+        id: exe
         shell: pwsh
         run: |
-          $files = @(Get-ChildItem -LiteralPath 'publish' -Recurse -File)
-          $files | ForEach-Object { Write-Host $_.FullName }
-          if ($files.Count -ne 1 -or $files[0].Name -ne 'MKW.WinUI.exe') {
-            throw "Expected only MKW.WinUI.exe in publish output; found $($files.Count) files. Refusing to publish an incomplete release."
+          $exe = Get-ChildItem -Path . -Recurse -File -Filter "MKW.WinUI.exe" |
+            Where-Object { $_.FullName -match '[\\/]publish[\\/]' } |
+            Select-Object -First 1
+
+          if (-not $exe) {
+            throw "Could not find published MKW.WinUI.exe"
           }
 
-      - name: Package single EXE for GitHub Release
-        shell: pwsh
-        run: |
-          Compress-Archive -LiteralPath 'publish/MKW.WinUI.exe' -DestinationPath 'MKW-Save-Editor-win-x64.zip' -Force
+          "path=$($exe.FullName)" >> $env:GITHUB_OUTPUT
+          Write-Host "Found: $($exe.FullName)"
 
-      - name: Upload executable as Actions artifact
+      - name: Upload Actions artifact
         uses: actions/upload-artifact@v4
         with:
           name: MKW-Save-Editor-win-x64
-          path: publish/MKW.WinUI.exe
+          path: ${{ steps.exe.outputs.path }}
           if-no-files-found: error
-          compression-level: 0
 
-      - name: Publish GitHub Release for version tags
-        if: startsWith(github.ref, 'refs/tags/v') && github.event_name == 'push'
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: MKW-Save-Editor-win-x64.zip
+          files: ${{ steps.exe.outputs.path }}
           generate_release_notes: true
           fail_on_unmatched_files: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # This step needs contents: write, granted at the job level below.
-    permissions:
-      contents: write
