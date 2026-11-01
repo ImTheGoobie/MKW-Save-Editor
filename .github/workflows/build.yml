@@ -52,16 +52,8 @@ jobs:
           }
 
           "path=$($exe.FullName)" >> $env:GITHUB_OUTPUT
-          Write-Host "Found: $($exe.FullName)"
 
-      - name: Upload Actions artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: MKW-Save-Editor-win-x64
-          path: ${{ steps.exe.outputs.path }}
-          if-no-files-found: error
-
-      - name: Create GitHub Release
+      - name: Publish EXE to GitHub Releases
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
