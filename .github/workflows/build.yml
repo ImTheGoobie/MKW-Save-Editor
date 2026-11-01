@@ -35,16 +35,25 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           if (-not (Test-Path 'publish/MKW.WinUI.exe')) { throw 'Published executable was not found.' }
 
-      - name: Package portable ZIP
+      - name: Verify single-file output
         shell: pwsh
         run: |
-          Compress-Archive -Path 'publish/*' -DestinationPath 'MKW-Save-Editor-win-x64.zip' -Force
+          $files = @(Get-ChildItem -LiteralPath 'publish' -Recurse -File)
+          $files | ForEach-Object { Write-Host $_.FullName }
+          if ($files.Count -ne 1 -or $files[0].Name -ne 'MKW.WinUI.exe') {
+            throw "Expected only MKW.WinUI.exe in publish output; found $($files.Count) files. Refusing to publish an incomplete release."
+          }
 
-      - name: Upload portable build artifact
+      - name: Package single EXE for GitHub Release
+        shell: pwsh
+        run: |
+          Compress-Archive -LiteralPath 'publish/MKW.WinUI.exe' -DestinationPath 'MKW-Save-Editor-win-x64.zip' -Force
+
+      - name: Upload executable as Actions artifact
         uses: actions/upload-artifact@v4
         with:
           name: MKW-Save-Editor-win-x64
-          path: publish/
+          path: publish/MKW.WinUI.exe
           if-no-files-found: error
           compression-level: 0
 

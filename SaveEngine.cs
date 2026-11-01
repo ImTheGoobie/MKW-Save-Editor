@@ -40,7 +40,10 @@ public sealed class SaveEngine
 
     public SaveEngine()
     {
-        var json = File.ReadAllText(System.IO.Path.Combine(AppContext.BaseDirectory, "drivers.json"));
+        using var catalogStream = typeof(SaveEngine).Assembly.GetManifestResourceStream("MKW.WinUI.drivers.json")
+            ?? throw new InvalidOperationException("Embedded driver catalog was not found.");
+        using var catalogReader = new StreamReader(catalogStream);
+        var json = catalogReader.ReadToEnd();
         using var doc = JsonDocument.Parse(json);
         foreach (var character in doc.RootElement.EnumerateObject())
         {
