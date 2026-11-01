@@ -2,14 +2,18 @@ name: Build portable self-contained Windows app
 
 on:
   push:
+    branches: ['**']
+    tags:
+      - 'v*'
   pull_request:
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: windows-2022
-    permissions:
-      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -36,9 +40,23 @@ jobs:
         run: |
           Compress-Archive -Path 'publish/*' -DestinationPath 'MKW-Save-Editor-win-x64.zip' -Force
 
-      - name: Upload portable build
+      - name: Upload portable build artifact
         uses: actions/upload-artifact@v4
         with:
           name: MKW-Save-Editor-win-x64
-          path: MKW-Save-Editor-win-x64.zip
+          path: publish/
           if-no-files-found: error
+          compression-level: 0
+
+      - name: Publish GitHub Release for version tags
+        if: startsWith(github.ref, 'refs/tags/v') && github.event_name == 'push'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: MKW-Save-Editor-win-x64.zip
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # This step needs contents: write, granted at the job level below.
+    permissions:
+      contents: write
