@@ -2,6 +2,8 @@
 
 An **experimental Mario Kart World (MKW) save file editor** for Windows, built with C#, .NET 8, and WinUI 3.
 
+**THIS HAS ONLY BEEN PROVEN WORKING FOR EDEN NX2!!!**
+
 ## Current features
 
 - **Character unlocking:** view and edit character/outfit unlocks in supported save files.
