@@ -49,11 +49,14 @@
                      Message="Eden unlock editing uses known offsets. Switch writes are experimental; its ownership metadata is not decoded."/>
             <Grid ColumnSpacing="12">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/><ColumnDefinition Width="0"/>
+                    <ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBox x:Name="SearchBox" PlaceholderText="Search characters or outfits…"
                          TextChanged="Filter_Changed"/>
+                <CheckBox Grid.Column="1" x:Name="ShowTranslationsCheck" Content="Show English names"
+                          IsChecked="False" VerticalAlignment="Center" Margin="0,0,12,0"
+                          Checked="Translations_Changed" Unchecked="Translations_Changed"/>
                 <Button Grid.Column="2" Content="Select all shown" Click="SelectAll_Click" Padding="12,8"/>
                 <Button Grid.Column="3" Content="Clear shown" Click="ClearAll_Click" Padding="12,8"/>
             </Grid>

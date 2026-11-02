@@ -19,6 +19,29 @@ public sealed partial class MainWindow : Window
         AppWindow.Resize(new Windows.Graphics.SizeInt32(1100, 790));
     }
     private void Filter_Changed(object sender, object e) => Filter();
+    private void Translations_Changed(object sender, RoutedEventArgs e) => Filter();
+    private string OutfitLabel(Driver d)
+    {
+        if (ShowTranslationsCheck?.IsChecked == true &&
+            DriverTranslations.English.TryGetValue(d.Actor, out var translated))
+        {
+            const string separator = " — ";
+            var at = translated.IndexOf(separator, StringComparison.Ordinal);
+            return at >= 0 ? translated[(at + separator.Length)..] : translated;
+        }
+        return d.DisplayName;
+    }
+    private string GroupLabel(Driver d)
+    {
+        if (ShowTranslationsCheck?.IsChecked == true &&
+            DriverTranslations.English.TryGetValue(d.Actor, out var translated))
+        {
+            const string separator = " — ";
+            var at = translated.IndexOf(separator, StringComparison.Ordinal);
+            return at >= 0 ? translated[..at] : translated;
+        }
+        return d.Character;
+    }
     private void Filter()
     {
         if (GroupPanel is null || SearchBox is null) return;
@@ -28,6 +51,8 @@ public sealed partial class MainWindow : Window
         {
             if (!d.Actor.Contains(query, StringComparison.OrdinalIgnoreCase) &&
                 !d.DisplayName.Contains(query, StringComparison.OrdinalIgnoreCase) &&
+                !OutfitLabel(d).Contains(query, StringComparison.OrdinalIgnoreCase) &&
+                !GroupLabel(d).Contains(query, StringComparison.OrdinalIgnoreCase) &&
                 !d.Character.Contains(query, StringComparison.OrdinalIgnoreCase)) continue;
             visible.Add(d);
         }
@@ -42,7 +67,7 @@ public sealed partial class MainWindow : Window
         groups.Clear();
         foreach (var d in visible)
         {
-            var key = d.Character;
+            var key = d.Character; // Stable grouping: translations must never change group identity.
             if (!groups.TryGetValue(key, out var members))
                 groups[key] = members = new List<Driver>();
             members.Add(d);
@@ -50,15 +75,24 @@ public sealed partial class MainWindow : Window
         var columnIndex = 0;
         foreach (var pair in groups.OrderBy(g => g.Key, StringComparer.OrdinalIgnoreCase))
         {
-            var members = pair.Value.OrderBy(d => d.DisplayName).ToList();
+            var members = pair.Value.OrderBy(d => OutfitLabel(d)).ToList();
+            // A shared group (notably the Kamek enemies) must keep its own
+            // heading. The first translated member is not the group name.
+            var translatedGroupNames = members.Select(GroupLabel)
+                .Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+            var displayGroupName = translatedGroupNames.Count == 1
+                ? translatedGroupNames[0]
+                : pair.Key;
             var parent = new CheckBox
             {
                 IsThreeState = true,
-                Content = pair.Key,
+                Content = displayGroupName,
                 FontSize = 16,
                 FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
                 VerticalAlignment = VerticalAlignment.Center
             };
+            var childChecks = new List<CheckBox>();
+            bool updatingChildChecks = false;
             void SyncParent()
             {
                 updatingGroupChecks = true;
@@ -74,6 +108,14 @@ public sealed partial class MainWindow : Window
             {
                 if (updatingGroupChecks) return;
                 foreach (var d in members) d.Selected = selected;
+                // Changing the model alone does not update dynamically created CheckBoxes.
+                updatingChildChecks = true;
+                try
+                {
+                    foreach (var child in childChecks)
+                        child.IsChecked = selected;
+                }
+                finally { updatingChildChecks = false; }
                 SyncParent();
             }
 
@@ -105,7 +147,7 @@ public sealed partial class MainWindow : Window
             };
             foreach (var d in members)
             {
-                var name = d.DisplayName;
+                var name = OutfitLabel(d);
                 var check = new CheckBox
                 {
                     Content = new TextBlock { Text = name, TextWrapping = TextWrapping.Wrap },
@@ -116,8 +158,19 @@ public sealed partial class MainWindow : Window
                     HorizontalContentAlignment = HorizontalAlignment.Left,
                     Padding = new Thickness(6, 4, 6, 4)
                 };
-                check.Checked += (_, _) => { d.Selected = true; SyncParent(); };
-                check.Unchecked += (_, _) => { d.Selected = false; SyncParent(); };
+                check.Checked += (_, _) =>
+                {
+                    if (updatingChildChecks) return;
+                    d.Selected = true;
+                    SyncParent();
+                };
+                check.Unchecked += (_, _) =>
+                {
+                    if (updatingChildChecks) return;
+                    d.Selected = false;
+                    SyncParent();
+                };
+                childChecks.Add(check);
                 content.Children.Add(check);
             }
             var expander = new Expander
@@ -139,7 +192,11 @@ public sealed partial class MainWindow : Window
     private void UpdateCount()
     {
         if (SelectedText is not null)
-            SelectedText.Text = $"{engine.Drivers.Count(d => d.Selected)} / {engine.Drivers.Count} selected";
+            SelectedText.Text =
+                $"{engine.Drivers.Count(d => d.Selected)} / {engine.Drivers.Count} catalog outfits selected" +
+                (engine.Format == SaveFormat.None
+                    ? " · no save loaded"
+                    : $" · {engine.LoadedCount} driver records in save");
     }
     private void SelectAll_Click(object sender, RoutedEventArgs e)
     {
@@ -215,10 +272,14 @@ public sealed partial class MainWindow : Window
             ? $"Eden save · {engine.LoadedCount} driver records"
             : $"Switch save · {engine.LoadedCount} driver records · experimental writes";
         PathText.Text = path;
+        bool freshEden = engine.Format == SaveFormat.Eden && engine.LoadedCount == 0;
         SaveButton.IsEnabled = true;
-        Notice.Severity = engine.Format == SaveFormat.Switch ? InfoBarSeverity.Warning : InfoBarSeverity.Success;
-        Notice.Title = engine.Format == SaveFormat.Switch ? "Switch editing is experimental" : "Eden save ready";
-        Notice.Message = engine.Format == SaveFormat.Switch
+        Notice.Severity = freshEden || engine.Format == SaveFormat.Switch ? InfoBarSeverity.Warning : InfoBarSeverity.Success;
+        Notice.Title = freshEden ? "Fresh Eden save — experimental writes enabled"
+            : engine.Format == SaveFormat.Switch ? "Switch editing is experimental" : "Eden save ready";
+        Notice.Message = freshEden
+            ? "Fresh save has zero driver records. Writing is enabled at your request; new driver records and metadata will be created using the experimental Eden layout. Back up your save first."
+            : engine.Format == SaveFormat.Switch
             ? "Driver IDs can be appended, but ownership flags and list metadata are unknown. Removal is blocked. Changes may not unlock anything in-game."
             : "Driver unlocks can be edited. The app will create a .bak backup before overwriting.";
         Filter();

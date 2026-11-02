@@ -1,6 +1,7 @@
 @echo off
 setlocal
 cd /d "%~dp0"
+del publish /Q
 echo Checking .NET SDK selection...
 dotnet --version
 if errorlevel 1 (

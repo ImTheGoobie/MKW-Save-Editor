@@ -85,78 +85,102 @@ public sealed class SaveEngine
                 throw new InvalidDataException("Switch driver array signature did not match.");
         }
         else throw new InvalidDataException($"Unsupported save size: {bytes.Length:N0} bytes.");
-        if (count < 1 || count > Capacity) throw new InvalidDataException("Invalid driver count.");
+        if (count < 0 || count > Capacity) throw new InvalidDataException("Invalid driver count.");
+        // A legitimate fresh Eden save can have zero driver records even after Free Roam.
+        // Permit inspection, but do not initialize an unknown driver structure.
         var ids = new HashSet<uint>();
         for (int i = 0; i < count; i++) ids.Add(Read(bytes, offset + 4 * i));
         foreach (var d in Drivers) d.Selected = ids.Contains(d.Id);
         loaded = bytes; path = file; Format = kind; LoadedCount = count;
     }
+    // Experimental: prefix the 32 default hashes from the natural low-progress Switch save.
+    // Only the Eden hash list and its assumed count are modified; ownership/state are untouched.
+    private static readonly uint[] SwitchStarterHashes = new uint[]
+    {
+        0xD5330F41u, 0x0613A431u, 0x86957C49u, 0x13F70995u,
+        0xF172BA74u, 0x8B6AAE56u, 0xE4C5FCBBu, 0x94FD556Eu,
+        0x5F29E03Bu, 0xE32D72BEu, 0x17C01F52u, 0x6CD48F8Eu,
+        0x6E260DC9u, 0xCC803F13u, 0x4EA426A1u, 0xCD071A6Au,
+        0xE23BF936u, 0xEEE250FFu, 0xCAAE464Bu, 0x5BFDE09Bu,
+        0x2D0E9655u, 0xC353E39Du, 0xCCE156BEu, 0xB0E76CCEu,
+        0xEF898557u, 0x987F77F3u, 0x869CBF05u, 0xE3EC94EEu,
+        0x5F5ACEF6u, 0x5F72AE5Du, 0x2CB49FA9u, 0xB60EDC0Eu,
+    };
+
+    // Normal saves always keep the 32 natural starter hashes at the front.
+    // The default roster is not user-toggleable and must never be removed.
     public (int added, int total, string backup) Save()
     {
         if (loaded is null || path is null) throw new InvalidOperationException("Open a save first.");
         if (!File.ReadAllBytes(path).SequenceEqual(loaded))
             throw new IOException("The save changed on disk. Reopen it first.");
+
         var bytes = (byte[])loaded.Clone();
         int offset = Format == SaveFormat.Eden ? EdenIds : SwitchIds;
         var known = Drivers.Select(d => d.Id).ToHashSet();
         var selected = Drivers.Where(d => d.Selected).Select(d => d.Id).ToHashSet();
-        var records = new List<(uint id, uint owned, uint state)>();
-        var seen = new HashSet<uint>();
-        for (int i = 0; i < LoadedCount; i++)
+        var existing = new List<uint>();
+        var existingSet = new HashSet<uint>();
+        // Read the populated list rather than trusting the experimental count field.
+        for (int i = 0; i < Capacity; i++)
         {
-            var id = Read(bytes, offset + 4 * i);
+            uint id = Read(bytes, offset + i * 4);
+            if (id == 0) break;
+            if (!existingSet.Add(id))
+                throw new InvalidDataException($"Duplicate driver hash at slot {i}; refusing to rewrite.");
+            existing.Add(id);
+        }
+        if (Format == SaveFormat.Switch)
+        {
+            // Preserve Switch behavior: append only, never change its existing ordering.
+            var appended = Drivers.Where(d => d.Selected && !existingSet.Contains(d.Id))
+                                  .Select(d => d.Id).ToList();
+            if (existing.Count + appended.Count > Capacity)
+                throw new InvalidDataException("Switch driver list is full.");
+            for (int i = 0; i < appended.Count; i++)
+                Write(bytes, offset + (existing.Count + i) * 4, appended[i]);
+            return Commit(bytes, appended.Count, existing.Count + appended.Count);
+        }
+
+        var output = new List<uint>(SwitchStarterHashes);
+        var seen = SwitchStarterHashes.ToHashSet();
+        foreach (uint id in existing)
+        {
+            // Only remove a known outfit if the user explicitly unchecked it.
             if (known.Contains(id) && !selected.Contains(id)) continue;
-            if (!seen.Add(id)) continue;
-            records.Add((id, Format == SaveFormat.Eden ? Read(bytes, EdenOwned + i * 4) : 0,
-                Format == SaveFormat.Eden ? Read(bytes, EdenState + i * 4) : 0));
+            if (seen.Add(id)) output.Add(id);
         }
         int added = 0;
         foreach (var d in Drivers.Where(d => d.Selected))
-            if (seen.Add(d.Id)) { records.Add((d.Id, 1, 1)); added++; }
-        if (records.Count > Capacity) throw new InvalidDataException("Driver list is full.");
-        if (Format == SaveFormat.Switch)
-        {
-            // We know the Switch driver-ID array, but not its count/ownership metadata.
-            // Never remove or reorder existing entries in this format.
-            if (records.Count < LoadedCount ||
-                Enumerable.Range(0, LoadedCount).Any(i => records[i].id != Read(bytes, offset + i * 4)))
-                throw new InvalidOperationException(
-                    "Switch removal/reordering is disabled until its metadata is decoded.");
-            for (int i = LoadedCount; i < records.Count; i++)
-            {
-                if (Read(bytes, offset + i * 4) != 0)
-                    throw new InvalidDataException("Switch array has no empty slot.");
-                Write(bytes, offset + i * 4, records[i].id);
-            }
-        }
-        else
-        {
-            for (int i = 0; i < Math.Max(LoadedCount, records.Count); i++)
-            {
-                Write(bytes, offset + i * 4, 0);
-                Write(bytes, EdenOwned + i * 4, 0);
-                Write(bytes, EdenState + i * 4, 0);
-            }
-            for (int i = 0; i < records.Count; i++)
-            {
-                Write(bytes, offset + i * 4, records[i].id);
-                Write(bytes, EdenOwned + i * 4, records[i].owned);
-                Write(bytes, EdenState + i * 4, records[i].state);
-            }
-            Write(bytes, EdenCount, (uint)records.Count);
-            Write(bytes, EdenAcquired, checked(Read(bytes, EdenAcquired) + (uint)added));
-        }
-        if (bytes.SequenceEqual(loaded)) return (0, records.Count, "");
-        var backup = path + ".bak";
+            if (seen.Add(d.Id)) { output.Add(d.Id); added++; }
+        if (output.Count > Capacity)
+            throw new InvalidDataException($"Need {output.Count} driver slots, capacity is {Capacity}. Nothing written.");
+
+        // Only rewrite the ID list and its count. The before/after tests showed
+        // ownership/state indices do not reliably match ID-list positions.
+        // Preserving those arrays avoids corrupting unrelated progression data.
+        for (int i = 0; i < Capacity; i++)
+            Write(bytes, EdenIds + 4 * i, i < output.Count ? output[i] : 0u);
+        Write(bytes, EdenCount, (uint)output.Count);
+        // Do not fabricate acquired counts or ownership/state entries.
+        return Commit(bytes, added, output.Count);
+    }
+
+    private (int added, int total, string backup) Commit(byte[] bytes, int added, int total)
+    {
+        if (loaded is null || path is null) throw new InvalidOperationException("Open a save first.");
+        if (bytes.SequenceEqual(loaded)) return (0, total, "");
+        string backup = path + ".bak";
         File.Copy(path, backup, overwrite: true);
-        var temporary = path + ".mkw.tmp";
+        string temp = path + ".mkw.tmp";
         try
         {
-            File.WriteAllBytes(temporary, bytes);
-            File.Move(temporary, path, overwrite: true);
+            File.WriteAllBytes(temp, bytes);
+            File.Move(temp, path, overwrite: true);
         }
-        finally { if (File.Exists(temporary)) File.Delete(temporary); }
-        loaded = bytes; LoadedCount = records.Count;
-        return (added, records.Count, backup);
+        finally { if (File.Exists(temp)) File.Delete(temp); }
+        loaded = bytes;
+        LoadedCount = total;
+        return (added, total, backup);
     }
 }
